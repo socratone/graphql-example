@@ -1,0 +1,10 @@
+{
+  company(id: "1") {
+    ...companyDetails
+  }
+}
+
+fragment companyDetails on Company {
+  id
+  name
+}

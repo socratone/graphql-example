@@ -1,0 +1,12 @@
+{
+  kakao: company(id: "1") {
+    users {
+      firstName
+    }
+  }
+  elice: company(id: "2") {
+    users {
+      firstName
+    }
+  }
+}
