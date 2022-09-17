@@ -3,20 +3,27 @@ const {
   GraphQLString,
   GraphQLInt,
   GraphQLSchema,
+  GraphQLList,
 } = require('graphql');
 const { companies, users } = require('./datas');
 
 const CompayType = new GraphQLObjectType({
   name: 'Company',
-  fields: {
+  fields: () => ({
     id: { type: GraphQLString },
     name: { type: GraphQLString },
-  },
+    users: {
+      type: new GraphQLList(UserType),
+      resolve(parentValue, args) {
+        return users.filter((user) => user.companyId === parentValue.id);
+      },
+    },
+  }),
 });
 
 const UserType = new GraphQLObjectType({
   name: 'User',
-  fields: {
+  fields: () => ({
     id: { type: GraphQLString },
     firstName: { type: GraphQLString },
     age: { type: GraphQLInt },
@@ -28,7 +35,7 @@ const UserType = new GraphQLObjectType({
         );
       },
     },
-  },
+  }),
 });
 
 const RootQuery = new GraphQLObjectType({
@@ -39,6 +46,13 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLString } },
       resolve(parentValue, args) {
         return users.find((user) => user.id === args.id);
+      },
+    },
+    company: {
+      type: CompayType,
+      args: { id: { type: GraphQLString } },
+      resolve(parentValue, args) {
+        return companies.find((company) => company.id === args.id);
       },
     },
   },

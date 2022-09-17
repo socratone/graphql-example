@@ -22,6 +22,12 @@ const users = [
     age: 40,
     companyId: '1',
   },
+  {
+    id: '3',
+    firstName: 'Paul',
+    age: 30,
+    companyId: '2',
+  },
 ];
 
 module.exports = {
