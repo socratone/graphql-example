@@ -4,19 +4,15 @@ const {
   GraphQLInt,
   GraphQLSchema,
 } = require('graphql');
+const { companies, users } = require('./datas');
 
-const users = [
-  {
-    id: '1',
-    firstName: 'John',
-    age: 30,
+const CompayType = new GraphQLObjectType({
+  name: 'Company',
+  fields: {
+    id: { type: GraphQLString },
+    name: { type: GraphQLString },
   },
-  {
-    id: '2',
-    firstName: 'Peter',
-    age: 40,
-  },
-];
+});
 
 const UserType = new GraphQLObjectType({
   name: 'User',
@@ -24,6 +20,14 @@ const UserType = new GraphQLObjectType({
     id: { type: GraphQLString },
     firstName: { type: GraphQLString },
     age: { type: GraphQLInt },
+    company: {
+      type: CompayType,
+      resolve(parentValue, args) {
+        return companies.find(
+          (company) => company.id === parentValue.companyId
+        );
+      },
+    },
   },
 });
 
